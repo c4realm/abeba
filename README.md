@@ -5,6 +5,10 @@
     src="docs/branding/abeba-banner.png"
     alt="Abeba Equb — Save together, bloom together"
     width="100%"
+   />
+
+ </p>
+
 
 # አበባ · Abeba Equb
 
