@@ -1,8 +1,16 @@
 <div align="center">
+<p align="center">
+
+<img
+    src="docs/branding/abeba-banner.png"
+    alt="Abeba Equb — Save together, bloom together"
+    width="100%"
 
 # አበባ · Abeba Equb
 
 ### Save together, bloom together.
+
+</div>
 
 **A student-led digital platform for organizing and managing Ethiopian Equb groups.**
 
