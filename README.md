@@ -1,20 +1,25 @@
-<div align="center">
-<p align="center">
 
-<img
+<div align="center">
+
+  <img
+    src="docs/branding/abeba-logo.png"
+    alt="Abeba Equb Official Logo"
+    width="150"
+  />
+
+  <h1>አበባ · Abeba Equb</h1>
+
+  <p><strong>Save together, bloom together.</strong></p>
+
+</div>
+
+<p align="center">
+  <img
     src="docs/branding/abeba-banner.png"
     alt="Abeba Equb — Save together, bloom together"
     width="100%"
-   />
-
- </p>
-
-
-# አበባ · Abeba Equb
-
-### Save together, bloom together.
-
-</div>
+  />
+</p>
 
 **A student-led digital platform for organizing and managing Ethiopian Equb groups.**
 
