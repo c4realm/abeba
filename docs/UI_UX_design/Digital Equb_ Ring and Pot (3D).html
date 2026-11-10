@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Digital Equb: Ring and Pot</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;600&family=Noto+Sans+Ethiopic:wght@400;600&display=swap">
+<style>
+:root{--bg:#F4ECD8;--card:#FBF6E9;--ink:#1F1A1F;--mut:#5A4D52;--line:#D9CBA8;--crimson:#B5192B;--emerald:#1F8A57;--emeraldtx:#176B44;--indigo:#2B2379;--ochre:#E4A81E;--terra:#C9603E;--lilac:#7B6FC4;--straw:#D5AA76;--on-fill:#F9F3E4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#1A1519;--card:#251E24;--ink:#F3EBD6;--mut:#B8A9AE;--line:#3A3037;--crimson:#E0475A;--emerald:#3FB27A;--emeraldtx:#5BCB93;--indigo:#8E86E0;--ochre:#F0BC45;--on-fill:#1A1519}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#1A1519;--card:#251E24;--ink:#F3EBD6;--mut:#B8A9AE;--line:#3A3037;--crimson:#E0475A;--emerald:#3FB27A;--emeraldtx:#5BCB93;--indigo:#8E86E0;--ochre:#F0BC45;--on-fill:#1A1519}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,"Noto Sans Ethiopic",system-ui,sans-serif}
+main{max-width:920px;margin:0 auto;padding:18px 16px 56px}
+h1{font:600 clamp(30px,6vw,46px)/1.05 Fraunces,"Noto Serif Ethiopic",Georgia,serif;margin:6px 0 4px}
+.sub{color:var(--mut);margin:0 0 14px;max-width:58ch}
+.weave{height:12px;border-radius:2px;margin:12px 0 18px;background:
+ repeating-linear-gradient(90deg,var(--crimson) 0 18px,var(--emerald) 18px 36px,var(--indigo) 36px 54px,var(--straw) 54px 72px);
+ -webkit-mask:repeating-conic-gradient(#000 0 25%,rgba(0,0,0,.55) 0 50%) 0 0/6px 6px;mask:repeating-conic-gradient(#000 0 25%,rgba(0,0,0,.55) 0 50%) 0 0/6px 6px}
+.stage{display:grid;grid-template-columns:1fr 280px;gap:16px}
+@media(max-width:760px){.stage{grid-template-columns:1fr}}
+.cv{background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden;position:relative;touch-action:pan-y}
+canvas{display:block;width:100%;height:auto}
+.fallback{padding:24px;color:var(--mut)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px;border-top:8px solid var(--ochre)}
+.panel h2{font:600 18px Fraunces,Georgia,serif;margin:0 0 8px}
+ol.m{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px}
+ol.m li{display:flex;gap:8px;align-items:center;padding:3px 6px;border-radius:4px}
+ol.m li.cur{background:color-mix(in srgb,var(--ochre) 28%,transparent);font-weight:600}
+.dot{width:12px;height:12px;border-radius:50%;flex:none;border:2px solid var(--ink)}
+.paid{background:var(--emerald)}.due{background:var(--ochre)}.late{background:var(--crimson)}
+.tier{margin-left:auto;color:var(--mut);font-size:12px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 8px}
+button{font:600 15px Inter,system-ui,sans-serif;min-height:44px;padding:0 18px;border-radius:4px;border:2px solid var(--indigo);cursor:pointer;background:var(--indigo);color:var(--on-fill)}
+button.o{background:transparent;color:var(--ink);border-color:var(--ink)}button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
+#st{min-height:3em;font-weight:600}
+.sw{display:flex;flex-wrap:wrap;gap:0;margin-top:22px;border:1px solid var(--line)}
+.sw div{flex:1 1 90px;padding:26px 8px 6px;font-size:12px;color:#fff}.sw b{display:block;font-size:12px}
+</style></head><body><main>
+<h1>እቁብ · Digital Equb</h1>
+<p class="sub">The Ring and Pot in 3D. Members sit around a woven pot. When everyone has paid, the cycle closes and the ring turns to the next recipient.</p>
+<div class="weave" aria-hidden="true"></div>
+<div class="stage">
+ <div class="cv"><canvas id="c" width="900" height="700" role="img" aria-label="3D woven pot with ten members around it. Use the buttons below to record payments and close the cycle."></canvas></div>
+ <div class="panel"><h2>Members</h2><ol class="m" id="list"></ol></div>
+</div>
+<div class="bar"><button id="pay">Record a payment</button><button id="close" disabled>Close cycle</button><button class="o" id="reset">Start over</button><button class="o" id="th">Light / dark</button></div>
+<div id="st" aria-live="polite"></div>
+<div class="sw" id="sw"></div>
+<p class="sub" style="margin-top:8px;font-size:13px">Palette sampled from the two reference images: a woven mesob top (crimson, emerald, indigo, straw) and a patchwork painting (terracotta, ochre, plum ink, lilac). Saturated color is used in panels and fills; reading surfaces stay quiet.</p>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const N=10,C=1000,NAMES=["Abebe","Tigist","Dawit","Selam","Yonas","Hana","Kebede","Meron","Biniam","Rahel"];
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches,$=q=>document.querySelector(q);
+const K=Math.ceil(.3*N),tier=i=>i+1<=K?"early":i+1>N-K?"late":"middle";
+let st,idx,rot,target;
+function reset(){st=NAMES.map((_,i)=>i<5?"paid":i==8?"late":"due");idx=0;rot=target=0;ui()}
+const SW=[["Crimson weave","#B5192B"],["Emerald weave","#1F8A57"],["Indigo weave","#2B2379"],["Straw","#D5AA76"],["Ochre panel","#E4A81E"],["Terracotta","#C9603E"],["Scarf lilac","#7B6FC4"],["Plum ink","#1F1A1F"]];
+$("#sw").innerHTML=SW.map(([n,h])=>`<div style="background:${h};${["#D5AA76","#E4A81E"].includes(h)?"color:#1F1A1F":""}"><b>${n}</b>${h}</div>`).join("");
+function ui(){
+ const paid=st.filter(s=>s=="paid").length,done=idx>=N;
+ $("#list").innerHTML=NAMES.map((n,i)=>`<li class="${i==idx&&!done?"cur":""}"><span class="dot ${st[i]}"></span>${n}<span class="tier">${tier(i)}${i==idx&&!done?" · receives":""}</span></li>`).join("");
+ $("#st").textContent=done?"Equb complete. Every member has been paid.":`Cycle ${idx+1} of ${N}. ${NAMES[idx]} receives Br ${(C*N).toLocaleString()}. ${paid} of ${N} paid, pot Br ${(paid*C).toLocaleString()}.`;
+ $("#pay").disabled=done||paid==N;$("#close").disabled=done||paid<N;
+ if(window.sync)sync();
+}
+$("#pay").onclick=()=>{const i=st.findIndex(s=>s=="late");const j=i>=0?i:st.findIndex(s=>s=="due");if(j>=0){st[j]="paid";ui()}};
+$("#close").onclick=()=>{idx++;target=-idx*2*Math.PI/N;st=st.map(()=> "due");ui()};
+$("#reset").onclick=reset;
+$("#th").onclick=()=>{const d=document.documentElement;d.dataset.theme=getComputedStyle(d).colorScheme.includes("dark")?"light":"dark"};
+reset();
+try{
+ const cv=$("#c"),R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+ R.setPixelRatio(Math.min(devicePixelRatio,2));
+ const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(38,900/700,.1,100);
+ scene.add(new THREE.HemisphereLight(0xffffff,0x7a6458,.95));
+ const dl=new THREE.DirectionalLight(0xffffff,.8);dl.position.set(4,8,5);scene.add(dl);
+ // woven texture: concentric rings, radial colour blocks, straw checks (after the mesob reference)
+ const t=document.createElement("canvas");t.width=1024;t.height=512;const g=t.getContext("2d");
+ const cols=["#B5192B","#1F8A57","#2B2379","#B5192B"],rows=9,seg=24,cw=1024/seg,rh=512/rows,cell=7;
+ for(let r=0;r<rows;r++)for(let s=0;s<seg;s++){
+  const band=r==2||r==5,col=band?(s%6<3?"#2B2379":"#1F8A57"):cols[(Math.floor(s/3)+(r%2)+Math.floor(r/3))%4];
+  const x0=s*cw,y0=r*rh;g.fillStyle=col;g.fillRect(x0,y0,cw+1,rh+1);
+  for(let y=0;y<rh;y+=cell)for(let x=0;x<cw;x+=cell)if(((x/cell|0)+(y/cell|0))%2==0){g.fillStyle="rgba(213,170,118,.8)";g.fillRect(x0+x+1,y0+y+1,cell-2,cell-2)}
+ }
+ const tex=new THREE.CanvasTexture(t);tex.wrapS=THREE.RepeatWrapping;tex.anisotropy=4;
+ const pts=[];for(let i=0;i<=26;i++){const r=2.6*i/26;pts.push(new THREE.Vector2(Math.max(r,.001),.9*Math.pow(r/2.6,2.2)))}
+ const bowl=new THREE.Mesh(new THREE.LatheGeometry(pts,96),new THREE.MeshStandardMaterial({map:tex,roughness:.8,side:THREE.DoubleSide}));
+ bowl.position.y=.5;scene.add(bowl);
+ const foot=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.7,.5,48),new THREE.MeshStandardMaterial({color:0x5a3a2a,roughness:.9}));foot.position.y=.25;scene.add(foot);
+ const gold=new THREE.Mesh(new THREE.CylinderGeometry(1,1,.06,64),new THREE.MeshStandardMaterial({color:0xE4A81E,metalness:.55,roughness:.35,emissive:0x3a2600}));scene.add(gold);
+ const ring=new THREE.Group();ring.position.y=.9;scene.add(ring);
+ const COL={paid:0x1F8A57,due:0xE4A81E,late:0xB5192B},beads=[];
+ for(let i=0;i<N;i++){const a=i*2*Math.PI/N;
+  const b=new THREE.Mesh(new THREE.SphereGeometry(.36,28,20),new THREE.MeshStandardMaterial({color:COL.due,roughness:.45}));
+  b.position.set(Math.sin(a)*3.9,0,Math.cos(a)*3.9);b.userData.i=i;
+  const h=new THREE.Mesh(new THREE.TorusGeometry(.56,.055,12,40),new THREE.MeshStandardMaterial({color:0xE4A81E,emissive:0x6a4a00}));h.rotation.x=Math.PI/2;h.visible=false;b.add(h);b.userData.h=h;
+  ring.add(b);beads.push(b)}
+ window.sync=()=>{const paid=st.filter(s=>s=="paid").length,l=.06+paid/N*.62,rr=2.6*Math.pow(l/.9,1/2.2)*.96;
+  gold.scale.set(rr,1,rr);gold.position.y=.5+l;
+  beads.forEach((b,i)=>{b.material.color.setHex(COL[st[i]]);const cur=i==idx&&idx<N;b.scale.setScalar(cur?1.35:1);b.userData.h.visible=cur})};
+ sync();
+ let px=.5;const fit=()=>{const w=cv.parentElement.clientWidth,h=Math.round(w*.78);R.setSize(w,h,false);cv.style.height=h+"px";cam.aspect=w/h;cam.updateProjectionMatrix()};
+ fit();addEventListener("resize",fit);
+ cv.addEventListener("pointermove",e=>{if(!RM){const r=cv.getBoundingClientRect();px=(e.clientX-r.left)/r.width}});
+ const ray=new THREE.Raycaster(),m=new THREE.Vector2();
+ cv.addEventListener("click",e=>{const r=cv.getBoundingClientRect();m.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(m,cam);
+  const hit=ray.intersectObjects(beads)[0];if(hit){const i=hit.object.userData.i;$("#st").textContent=`${NAMES[i]}: slot ${i+1}, ${tier(i)} tier, ${st[i]}.`}});
+ (function loop(t){requestAnimationFrame(loop);
+  rot=RM?target:rot+(target-rot)*.07;ring.rotation.y=rot;
+  const s=RM?0:Math.sin(t/900)*.04;beads.forEach(b=>{b.userData.h.scale.setScalar(1+(b.userData.h.visible?s:0))});
+  cam.position.set((px-.5)*1.6,5.4,8.2);cam.lookAt(0,.4,0);R.render(scene,cam)})(0);
+}catch(e){$(".cv").innerHTML='<p class="fallback">3D is not available on this device. The member list shows the same information.</p>'}
+</script></body></html>

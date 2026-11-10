@@ -1,0 +1,12 @@
+line-length = 120
+target-version = "py312"
+extend-exclude = ["**/migrations"]
+
+[lint]
+select = ["E", "F", "I", "B", "UP", "S"]
+ignore = ["S101"]
+
+[lint.per-file-ignores]
+"tests/*" = ["S105", "S106"]
+"config/settings.py" = ["S105"]
+"config/settings_test.py" = ["S105"]

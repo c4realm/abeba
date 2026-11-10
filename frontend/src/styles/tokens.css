@@ -1,0 +1,26 @@
+/* Woven Circle palette, sampled from the team's reference images (spec section 9).
+   Saturated colour = fills/panels/3D. Reading surfaces stay cream or plum ink.
+   Ochre/straw are never used as text colour on light backgrounds. */
+:root {
+  --bg: #F4ECD8; --card: #FBF6E9; --ink: #1F1A1F; --muted: #5A4D52; --line: #D9CBA8;
+  --crimson: #B5192B; --emerald: #1F8A57; --emerald-text: #176B44; --indigo: #2B2379;
+  --ochre: #E4A81E; --terracotta: #C9603E; --lilac: #7B6FC4; --straw: #D5AA76; --on-fill: #F9F3E4;
+  --font-head: "Fraunces", "Noto Serif Ethiopic", Georgia, serif;
+  --font-body: "Inter", "Noto Sans Ethiopic", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1A1519; --card: #251E24; --ink: #F3EBD6; --muted: #B8A9AE; --line: #3A3037;
+    --crimson: #E0475A; --emerald: #3FB27A; --emerald-text: #5BCB93; --indigo: #8E86E0;
+    --ochre: #F0BC45; --terracotta: #E07A55; --lilac: #A79BE8; --on-fill: #1A1519;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1A1519; --card: #251E24; --ink: #F3EBD6; --muted: #B8A9AE; --line: #3A3037;
+  --crimson: #E0475A; --emerald: #3FB27A; --emerald-text: #5BCB93; --indigo: #8E86E0;
+  --ochre: #F0BC45; --terracotta: #E07A55; --lilac: #A79BE8; --on-fill: #1A1519;
+}
+/* Weave band: section dividers, card top edges, progress bars */
+.weave-band { height: 12px; background: repeating-linear-gradient(90deg, var(--crimson) 0 18px, var(--emerald) 18px 36px, var(--indigo) 36px 54px, var(--straw) 54px 72px); }
+:lang(am) body { font-size: 17px; line-height: 1.6; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

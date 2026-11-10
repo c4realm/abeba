@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Digital Equb: Project Timeline</title>
+<style>
+:root{--bg:#f4f6f0;--ink:#14231d;--mut:#4f5f57;--gold:#e9a820;--green:#2f7a4d;--red:#c8423a;--card:#fff;--line:#d3dacd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0e1a16;--ink:#e8efe9;--mut:#9fb0a6;--gold:#f2b93b;--green:#55b57b;--red:#ef6b62;--card:#15251f;--line:#263a32}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0e1a16;--ink:#e8efe9;--mut:#9fb0a6;--gold:#f2b93b;--green:#55b57b;--red:#ef6b62;--card:#15251f;--line:#263a32}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:20px 16px 60px}
+h1{font:600 clamp(28px,6vw,44px)/1.1 "Iowan Old Style",Palatino,Georgia,serif;margin:8px 0 4px}
+.sub{color:var(--mut);margin:0 0 16px;max-width:60ch}
+.top{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:24px;align-items:center}
+@media(max-width:700px){.top{grid-template-columns:1fr}}
+svg.ring{width:100%;height:auto;max-width:340px;margin:auto;display:block}
+.node{cursor:pointer}.node text{font:600 12px system-ui;fill:var(--ink);text-anchor:middle}
+.pulse{animation:p 2.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes p{50%{transform:scale(1.25);opacity:.5}}@media(prefers-reduced-motion:reduce){.pulse{animation:none}}
+.ms{display:grid;gap:10px}.m{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:6px;padding:10px 14px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.m b{font:600 26px "Iowan Old Style",Georgia,serif}.m.red{border-left-color:var(--red)}.m.ok{border-left-color:var(--green)}
+.bar{height:10px;background:var(--line);border-radius:5px;overflow:hidden;margin:6px 0 2px}.bar i{display:block;height:100%;background:var(--green)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 12px}
+button.c{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 14px;border-radius:99px;cursor:pointer}
+button.c[aria-pressed=true]{background:var(--ink);color:var(--bg)}button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+section.w{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:0 0 12px;padding:14px 16px}
+section.w.now{border:2px solid var(--gold)}
+.wh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}.wh h2{margin:0;font:600 20px "Iowan Old Style",Georgia,serif}
+.tag{font-size:13px;padding:1px 9px;border-radius:99px;border:1px solid var(--line);color:var(--mut)}.tag.b{border-color:var(--red);color:var(--red)}.tag.n{background:var(--gold);color:#14231d;border-color:var(--gold)}.tag.d{border-color:var(--green);color:var(--green)}
+label.t{display:flex;gap:10px;align-items:flex-start;padding:5px 0;cursor:pointer}label.t input{margin-top:5px;width:18px;height:18px;accent-color:var(--green)}
+label.t.x span{text-decoration:line-through;color:var(--mut)}.s{font-size:12px;color:var(--mut);border:1px solid var(--line);border-radius:4px;padding:0 6px;margin-left:auto;white-space:nowrap}
+.tb{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;font-size:14px;color:var(--mut)}
+</style></head><body><main>
+<h1>Digital Equb: build timeline</h1>
+<p class="sub">Nine weeks, Oct 12 to Dec 13, 2026. Tick tasks as they ship; progress is saved in this browser.</p>
+<div class="top"><svg class="ring" id="ring" viewBox="0 0 340 340" role="img" aria-label="Ring of nine project weeks"></svg>
+<div><div class="ms" id="ms"></div><div class="bar" aria-hidden="true"><i id="ob"></i></div><div id="ot" class="sub"></div></div></div>
+<div class="chips" id="chips" role="group" aria-label="Filter by workstream"></div>
+<div id="weeks"></div>
+<div class="tb"><button class="c" id="th">Toggle dark / light</button></div>
+</main><script>
+const T=__TASKS__,DAY=864e5,S=new Date(2026,9,12),MS=[["Feature freeze",new Date(2026,10,15)],["Code freeze",new Date(2026,11,12)],["Submission",new Date(2026,11,15)]];
+let done={},f="ALL";try{done=JSON.parse(localStorage.getItem("equb-done")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem("equb-done",JSON.stringify(done))}catch(e){}};
+const today=new Date(),td=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const ws=w=>new Date(+S+7*(w-1)*DAY),we=w=>new Date(+ws(w)+6*DAY),fmt=d=>d.toLocaleDateString("en",{month:"short",day:"numeric"});
+const cw=Math.min(9,Math.max(0,Math.floor((td-S)/DAY/7)+1));
+const id=(t,i)=>t[0]+"-"+i,tasks=T.map((t,i)=>({w:t[0],s:t[1],t:t[2],id:t[0]+"-"+i}));
+const $=q=>document.querySelector(q);
+function render(){
+ const wk=n=>tasks.filter(x=>x.w==n),dn=a=>a.filter(x=>done[x.id]).length;
+ const all=dn(tasks),pct=Math.round(100*all/tasks.length);
+ // ring
+ let g="",R=125,C=170;
+ for(let w=1;w<=9;w++){const a=-Math.PI/2+(w-1)*2*Math.PI/9,x=C+R*Math.cos(a),y=C+R*Math.sin(a),a2=wk(w),p=dn(a2)/a2.length,r=22,L=2*Math.PI*r;
+  const late=w<cw&&p<1;
+  g+=`<g class="node" data-w="${w}" tabindex="0" role="button" aria-label="Week ${w}, ${Math.round(p*100)} percent done"><circle cx="${x}" cy="${y}" r="${r}" fill="var(--card)" stroke="var(--line)" stroke-width="5"/><circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${late?"var(--red)":"var(--green)"}" stroke-width="5" stroke-dasharray="${L*p} ${L}" transform="rotate(-90 ${x} ${y})"/>${w==cw?`<circle class="pulse" cx="${x}" cy="${y}" r="${r+7}" fill="none" stroke="var(--gold)" stroke-width="3"/>`:""}<text x="${x}" y="${y+4}">${w}</text></g>`}
+ g+=`<circle cx="${C}" cy="${C}" r="62" fill="var(--gold)" opacity=".92"/><text x="${C}" y="${C+6}" text-anchor="middle" style="font:700 34px Georgia,serif;fill:#14231d">${pct}%</text><text x="${C}" y="${C+28}" text-anchor="middle" style="font:12px system-ui;fill:#14231d">${all} of ${tasks.length} done</text>`;
+ $("#ring").innerHTML=g;
+ // milestones
+ $("#ms").innerHTML=MS.map(([n,d])=>{const k=Math.round((d-td)/DAY);return `<div class="m ${k<0?"ok":k<=7?"red":""}"><span>${n}<br><small>${fmt(d)}</small></span><b>${k<0?"passed":k==0?"today":k+" days"}</b></div>`}).join("");
+ $("#ob").style.width=pct+"%";
+ const late=tasks.filter(x=>x.w<cw&&!done[x.id]).length;
+ $("#ot").textContent=late?`${late} overdue task${late>1?"s":""} from earlier weeks. Clear them before starting new ones.`:"Nothing overdue. Keep the ring turning.";
+ // chips
+ $("#chips").innerHTML=["ALL","BE","FE","UI"].map(k=>`<button class="c" aria-pressed="${f==k}" data-f="${k}">${{ALL:"Everything",BE:"Backend",FE:"Frontend",UI:"UI design"}[k]}</button>`).join("");
+ // weeks
+ $("#weeks").innerHTML=[1,2,3,4,5,6,7,8,9].map(w=>{const a=wk(w),p=dn(a),st=p==a.length?["d","Done"]:w<cw?["b","Behind"]:w==cw?["n","This week"]:["","Upcoming"];
+  const L=a.filter(x=>f=="ALL"||x.s==f||x.s=="ALL").map(x=>`<label class="t ${done[x.id]?"x":""}"><input type="checkbox" data-id="${x.id}" ${done[x.id]?"checked":""}><span>${x.t}</span><em class="s" style="font-style:normal">${x.s}</em></label>`).join("");
+  return `<section class="w ${w==cw?"now":""}" id="w${w}"><div class="wh"><h2>Week ${w} <small style="font:14px system-ui;color:var(--mut)">${fmt(ws(w))} to ${fmt(we(w))}</small></h2><span class="tag ${st[0]}">${st[1]} (${p}/${a.length})</span></div>${L||"<p class=sub>No tasks for this filter.</p>"}</section>`}).join("");
+}
+document.addEventListener("change",e=>{if(e.target.dataset.id){done[e.target.dataset.id]=e.target.checked;save();render()}});
+document.addEventListener("click",e=>{const c=e.target.closest("[data-f]"),n=e.target.closest(".node");if(c){f=c.dataset.f;render()}if(n)$("#w"+n.dataset.w).scrollIntoView({behavior:"smooth"})});
+document.addEventListener("keydown",e=>{if(e.key=="Enter"&&e.target.classList.contains("node"))$("#w"+e.target.dataset.w).scrollIntoView()});
+$("#th").onclick=()=>{const d=document.documentElement,dark=getComputedStyle(d).colorScheme.includes("dark");d.dataset.theme=dark?"light":"dark"};
+render();
+</script></body></html>

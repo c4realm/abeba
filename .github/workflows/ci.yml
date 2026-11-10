@@ -1,0 +1,17 @@
+name: ci
+on: { pull_request: {}, push: { branches: [main] } }
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Backend tests
+        run: |
+          if [ -f backend/requirements.txt ]; then cd backend && pip install -r requirements.txt && pytest; else echo "no backend yet"; fi
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Frontend build
+        run: |
+          if [ -f frontend/package.json ]; then cd frontend && npm ci && npm run lint --if-present && npm run build; else echo "no frontend yet"; fi

@@ -1,0 +1,10 @@
+# Keep secrets and junk out of the agent's context
+.env
+.env.*
+!.env.example
+*.sqlite3
+*.pem
+*.key
+node_modules/
+.venv/
+staticfiles/

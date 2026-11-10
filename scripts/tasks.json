@@ -1,0 +1,18 @@
+[
+[1,"ALL","Create repo, protect main, enable CI"],[1,"ALL","Lock Charter rules + decision log (docs/CHARTER.md)"],
+[1,"BE","Django project, Neon Postgres, env config"],[1,"BE","Custom User (phone login) + JWT auth"],
+[1,"FE","Vite + Tailwind + shadcn, design tokens"],[1,"UI","Ring and Pot SVG prototype"],
+[1,"ALL","Deploy empty skeleton to Vercel + Render with /api proxy"],
+[2,"BE","Group, GroupTerms (hash), invite codes"],[2,"BE","Membership, tier request, accept terms"],
+[2,"FE","Auth screens + role routing"],[2,"FE","Group create wizard"],[2,"UI","Member dashboard with Ring"],
+[3,"BE","Cycle + Obligation state machine"],[3,"BE","Immutable ledger + computed balances"],
+[3,"BE","Sandbox payment gateway (idempotent)"],[3,"FE","3-step pay modal"],[3,"FE","Obligation list + status pills"],
+[4,"BE","Deadline ladder service + notices"],[4,"BE","Cure, dispute, Restricted standing"],
+[4,"BE","Payout: holdback, set-off, early premium"],[4,"BE","Hash-chained audit log"],[4,"FE","Notices + dispute screens"],
+[5,"BE","Email reminders (48h / 24h)"],[5,"BE","Guarantor flow"],[5,"BE","Student registry verification"],
+[5,"FE","Organizer dashboard"],[5,"FE","Admin console"],[5,"ALL","FEATURE FREEZE (Nov 15)"],
+[6,"UI","Visual polish, motion, dark mode"],[6,"FE","Amharic i18n"],[6,"FE","Responsive + accessibility pass"],[6,"BE","Security hardening (throttling, headers)"],
+[7,"BE","Tests: 80%+ on cycle/penalty/payout"],[7,"FE","Usability test with 5-10 students"],[7,"BE","Load test, 50 users"],[7,"ALL","Bug triage"],
+[8,"ALL","Bug fixes"],[8,"ALL","Docs: Ch. 3-5 + component diagram"],[8,"ALL","Performance pass"],
+[9,"ALL","CODE FREEZE (Dec 12)"],[9,"ALL","Demo rehearsal"],[9,"ALL","Final report, submit Dec 15"]
+]

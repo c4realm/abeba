@@ -1,0 +1,12 @@
+{
+  "editor.formatOnSave": true,
+  "editor.rulers": [120],
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.exclude": { "**/__pycache__": true, "**/.pytest_cache": true, "**/.ruff_cache": true },
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
+  "[python]": { "editor.defaultFormatter": "charliermarsh.ruff" },
+  "[javascript][javascriptreact][json][css][html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "git.confirmSync": true,
+  "git.autofetch": true
+}
