@@ -1,5 +1,7 @@
-import hashlib
-import json
+# those are imports for security + time + database handling
+
+import hashlib  #secure hash for audit log and digital fingerprint
+import json  #turn python objects into json strings for hashing
 
 from django.db import transaction
 from django.utils import timezone
@@ -8,10 +10,12 @@ from apps.audit.models import AuditEvent
 
 GENESIS = "0" * 64
 
+#this turns any object into a normalized string. this just means convert data into one consistent format
 
 def canonical(obj) -> str:
     return json.dumps(obj, sort_keys=True, separators=(",", ":"), default=str)
 
+#
 
 def compute_hash(prev_hash, seq, ts, actor_id, action, payload) -> str:
     raw = "|".join([prev_hash, str(seq), ts.isoformat(), str(actor_id or ""), action, canonical(payload)])
